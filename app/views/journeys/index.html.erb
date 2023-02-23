@@ -1,0 +1,23 @@
+<h1>Journey Index Page</h1>
+<% if @tag.present? %>
+  <h2>Showing Journeys tagged by:
+    <span class="badge rounded-pill bg-primary"><%= @tag.name %></span>
+  </h2>
+<% end %>
+
+<% @journeys.each do |journey| %>
+  <% if journey.images.present? %>
+    <% journey.images.each do |image| %>
+      <figure class="figure">
+        <%= image_tag image,  class: "figure-img img-fluid rounded", style: "width: 300px; display: block"%>
+        <figcaption class="figure-caption">
+        <h2><%= link_to journey.title, journey_path(journey) %></h2>
+        </figcaption>
+      </figure>
+    <% end %>
+  <% else %>
+    <h2><%= link_to journey.title, journey_path(journey) %></h2>
+  <% end %>
+<% end %>
+
+

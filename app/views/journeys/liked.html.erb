@@ -1,0 +1,7 @@
+<h1>Liked Journey</h1>
+
+ <% @journeys.each do |journey| %>
+   <div>
+     <h3><%= link_to journey.title, journey_path(journey) %></h3>
+   </div>
+ <% end %>

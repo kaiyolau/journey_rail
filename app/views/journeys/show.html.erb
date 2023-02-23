@@ -1,0 +1,113 @@
+<h1>Journey Show page</h1>
+<div class="row align-items-start">
+  <div >
+    <h2><%= @journey.title %></h2>
+  </div>
+  <div >
+      Today's weather: <%= @journey.weather %>
+  </div>
+  <div >
+    <% @likers.each do |liker| %>
+      <small><%= liker.full_name %> Has been liked</small>
+      <br>
+    <% end %>
+  </div>
+  <div >
+    <small>
+    Liked by: <%= link_to @journey.likes.count, journey_likers_path(@journey) %> users
+    </small>
+  </div>
+</div>
+
+<p><%= @journey.body %></p>
+<% if @journey.images.attached? %>
+  <% @journey.images.each do |image| %>
+  <p><%= image_tag image, style: "width: 250px; display: block" %></p>
+  <% end %>
+<% end %>
+<p><small>Created at: <%= @journey.created_at %></small></p>
+<label>Created by: <%= @journey.user.full_name %></label>
+<% if can? :crud, @journey %>
+  <%= link_to 'Edit', edit_journey_path(@journey) %>
+  <%= button_to 'Delete', journey_path(@journey), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }  %>
+<% end %>
+
+<small>
+  <% if @like.present? %>
+    <%= button_to "Unlike", like_path(@like), method: :delete %>
+  <% else %>
+    <%= button_to "Like", journey_likes_path(@journey), method: :post %>
+  <% end %>
+</small>
+
+<div style='width: 800px;'>
+  <div id="map" style='width: 800px; height: 400px;'></div>
+</div>
+<script>
+    //This is to create the map
+    //see this documentation: https://github.com/apneadiving/Google-Maps-for-Rails
+
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers([
+        {
+        "lat": <%= @journey.latitude %>,
+        "lng": <%= @journey.longitude %>,
+        "picture": {
+            "width":  32,
+            "height": 32
+        },
+        "infowindow": "Any message!"
+        }
+    ]);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+    handler.getMap().setZoom(17); //we are adding this to zoom in a bit
+});
+</script>
+
+<% unless @journey.tags.empty? %>
+  <p> Tags:
+    <% @journey.tags.each do |tag| %>
+      <%= link_to(
+        tag.name, journeys_path(tag: tag.name),
+        class: 'badge rounded-pill bg-primary'
+      )%>
+    <% end %>
+  </p>
+<% end %>
+
+
+<h4>Comments</h4>
+<hr>
+
+<% @comments.each do |comment| %>
+  <div>
+    <%= comment.body %>
+    <small>commented <%= time_ago_in_words(comment.created_at) %> ago by: <label><%= comment.user.full_name %></label></small>
+    <% if can? :crud, comment %>
+      <%= button_to "Delete", journey_comment_path(@journey, comment), method: :delete,form: { data: { turbo_confirm: "Are you sure?" } } %>
+    <% end %>
+    <hr>
+  </div>
+<% end %>
+
+<h3>Write an comment</h3>
+
+<% if @comment.errors.any? %>
+  <ul>
+    <%  @comment.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with(model:[@journey, @comment]) do |f| %>
+  <div>
+    <%= f.label :body %>
+    <br>
+    <%= f.text_area :body, cols: 50, rows: 5 %>
+  </div>
+  <%= f.submit "comment" %>
+<% end %>
+

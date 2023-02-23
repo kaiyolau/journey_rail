@@ -1,0 +1,104 @@
+<div>
+    <%= form_with(model: @journey,local: true ) do |form| %>
+        <div class="mb-3">
+            <%= form.label :title %>
+            <br>
+            <%= form.text_field :title %>
+        </div>
+        <div class="mb-3">
+            <%= form.label :body %>
+            <br>
+            <%= form.text_area :body, cols:100, rows: 30 %>
+        </div>
+
+        <div class="tag-wrapper">
+            <%= form.label :tag_names %>
+            <%= form.text_field :tag_names %>
+        </div>
+        <br>
+        <div class="mb-3">
+            <%= form.label :address %>
+            <%= form.text_field :address %>
+        </div>
+        <div class="mb-3">
+            <%= form.label :latitude %>
+            <%= form.text_field :latitude %>
+        </div>
+        <div class="mb-3">
+            <%= form.label :longitude %>
+            <%= form.text_field :longitude %>
+        </div>
+        <br>
+        <div>
+            <%= form.label :images %>
+            <%= form.file_field :images, multiple: true, name: 'images[]' %>
+            <%#= form.file_field :images, multiple: true, accept: 'application/pdf', name: 'images[]' %>
+        </div>
+        <br>
+        <div class="form-select">
+            <%= form.label :weather %>
+            <%= form.select :weather, ["Sunny", "Cloudy", "Rainy", "Snowy", "Tornadoes", "Thunderstorms", "typhoons", "Blizzards", "Droughts"] %>
+        </div>
+        <br>
+        <%= button_tag "TimeNow", onclick: "timeNow();", class: 'button-test' %>
+        <br>
+        <%= button_tag "Time Now", {id: "timeNow", class: "btn-primary"} %>
+        <br>
+        <%= button_tag "Time Now", type: 'button', id: "timeNow" %>
+
+
+
+        <%#= form.label :timing %>
+        <%#= form.datetime_select :timing %>
+        <br>
+
+        <%= form.submit %>
+    <% end %>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $("#TimeNow").on("click", function timeNow() {
+            console.log('test')
+            let now = new Date()
+            let current = now.getHours() + ':' + now.getMinutes();
+            console.log(current)
+            $(this).html('Launch Doggos!')
+            return current
+        })
+    });
+    function timeNow()
+        {
+            console.log("timeNow")
+        }
+
+
+
+    <%# selectize doc:
+        https://github.com/selectize/selectize.js/blob/master/docs/usage.md
+        %>
+
+        $(function() {
+        $('#journey_tag_names').selectize({
+            delimeter: ',',
+            persist: false,
+            labelField: 'name', //Column name in database
+            valueField: 'name', //Column name in database
+            searchField: 'name', //Column name in database
+            options: <% Tag.select(:name).to_json(except: [:id]).html_safe %>,
+            //The above line selects only names from tags table and converts them to
+            //a json array of objects without including ids and makes sure it is html safe string
+            //options: [{"name": "first tag name"}, {"name": "second tag name"}, etc]
+            create: function(input){
+            return {
+                name: input
+                    }
+                }
+            });
+        });
+</script>
+
+
+
+

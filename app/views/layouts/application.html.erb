@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Piece of journey</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <script  src="//maps.googleapis.com/maps/api/js?key=AIzaSyAkTpC2_q5NH0d1iAzxoairnjtfAxQQmPY"></script>
+    <script  src="//cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.min.js"></script>
+    <script  src='//cdn.jsdelivr.net/gmaps4rails/2.1.2/gmaps4rails.js'>  </script>
+    <script  src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js'>  </script>
+  </head>
+
+  <body>
+  <div class="container-xl">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="<%= root_path %>">Piece Of Journey</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link"  href="<%= journeys_path %>">journey Index</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<%= new_journey_path %>">Create New Journey</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <% if user_signed_in? %>
+              <li class="nav-item">
+                <a class="nav-link disabled">Hello <%= current_user.full_name %> </a>
+              </li>
+              <li class="nav-item">
+              <div><%= button_to "Log out", session_path, method: :delete, class: "btn btn-danger" %></div>
+              </li>
+              <li class="nav-item">
+              <div class="nav-link">
+                <a class="btn btn-primary btn-sm" href="<%= liked_journeys_path %>">Liked Journeys</a>
+              </div>
+            </li>
+            <% else %>
+              <li class="nav-item">
+                <div class="nav-link">
+                  <a class="btn btn-primary btn-sm" href="<%= new_session_path %>">Sign In</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="nav-link">
+                  <a class="btn btn-primary btn-sm" href="<%= new_user_path %>">Sign Up</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="nav-link">
+                  <a class="btn btn-primary btn-sm" href="<%= sign_in_with_google_path %>">Sign in with Google</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="nav-link">
+                  <a class="btn btn-primary btn-sm" href="<%= sign_in_with_github_path %>">Sign in with GitHub</a>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <% flash.each do |type, message| %>
+      <div class="alert alert-info" role="alert">
+        <%= type + "------" + message %>
+      </div>
+    <% end %>
+    <%= yield %>
+  </div>
+  </body>
+
+</html>

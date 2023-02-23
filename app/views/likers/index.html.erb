@@ -1,0 +1,5 @@
+<h1>List of likers</h1>
+
+<% @likers.each do |liker|  %>
+    <p><%= link_to liker.first_name, user_path(liker) %></p>
+<% end %>
