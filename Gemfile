@@ -65,11 +65,8 @@ gem 'rack-cors'
 
 gem 'rails_same_site_cookie'
 
-gem 'omniauth-github', '~> 1.4'
 
-gem 'omniauth-rails_csrf_protection'
 
-gem 'omniauth-google-oauth2'
 
 gem 'geocoder'
 gem 'gmaps4rails'

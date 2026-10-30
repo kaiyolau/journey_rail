@@ -32,14 +32,4 @@ Rails.application.routes.draw do
     resources :gifts, only: [:create]
   end
 
-
-  #OmniAuth Routes
-  get "/auth/github", as: :sign_in_with_github
-  get "/auth/google", as: :sign_in_with_google
-  get "/auth/:provider/callback", to: "callbacks#index"
-  #:provider will aloow us to use the same controller and action for different authentication systems
-  #such as github, twittter, facebook, etc.
-
-
-
 end
