@@ -1,5 +1,7 @@
 <h1>Sign In</h1>
 
+<%= render "shared/demo_hint", fill: true %>
+
 <%= form_with url: session_path do |form| %>
   <div>
     <%= form.label :email %>

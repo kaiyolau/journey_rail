@@ -1,0 +1,16 @@
+<%# Shown only on the public demo (SHOW_DEMO_HINT=true). %>
+<% if ENV["SHOW_DEMO_HINT"] == "true" %>
+  <div class="alert alert-info" role="note" id="demo-hint">
+    <strong>Just looking around?</strong> Sign in with the demo account:
+    <div>Email: <code>alice.demo@example.com</code></div>
+    <div>Password: <code>Demo1234!</code></div>
+    <% if local_assigns[:fill] %>
+      <button type="button" class="btn btn-outline-primary btn-sm mt-2"
+              onclick="document.getElementById('email').value='alice.demo@example.com';document.getElementById('password').value='Demo1234!';">
+        Fill in demo account
+      </button>
+    <% else %>
+      <div class="mt-1">No need to sign up: use the <a href="<%= new_session_path %>">Sign In</a> page.</div>
+    <% end %>
+  </div>
+<% end %>
